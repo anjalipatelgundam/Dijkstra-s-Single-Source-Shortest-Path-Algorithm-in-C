@@ -1,0 +1,75 @@
+// Dijkstra's Single Source Shortest Path Algorithm in C
+// Name: R. Pooja Reddy
+// Roll No: 2503B05130
+
+#include <stdio.h>
+#include <limits.h>
+#include <stdbool.h>
+
+#define NUM_VERTICES 5
+
+int findMinDistance(int distance[], bool visited[]) {
+    int minValue = INT_MAX;
+    int minIndex = -1;
+
+    for (int vertex = 0; vertex < NUM_VERTICES; vertex++) {
+        if (!visited[vertex] && distance[vertex] <= minValue) {
+            minValue = distance[vertex];
+            minIndex = vertex;
+        }
+    }
+
+    return minIndex;
+}
+
+void displayShortestPaths(int distance[], int sourceVertex) {
+    printf("Shortest distances from source vertex %d:\n", sourceVertex);
+    for (int i = 0; i < NUM_VERTICES; i++) {
+        printf("Vertex %d : %d\n", i, distance[i]);
+    }
+}
+
+void dijkstraAlgorithm(int adjacencyMatrix[NUM_VERTICES][NUM_VERTICES], int sourceVertex) {
+    int distance[NUM_VERTICES];
+    bool visited[NUM_VERTICES];
+
+    // Initialize distances and visited array
+    for (int i = 0; i < NUM_VERTICES; i++) {
+        distance[i] = INT_MAX;
+        visited[i] = false;
+    }
+
+    distance[sourceVertex] = 0; // Distance to itself is 0
+
+    // Find shortest paths for all vertices
+    for (int count = 0; count < NUM_VERTICES - 1; count++) {
+        int currentVertex = findMinDistance(distance, visited);
+        visited[currentVertex] = true;
+
+        // Update distances of adjacent vertices
+        for (int neighbor = 0; neighbor < NUM_VERTICES; neighbor++) {
+            if (!visited[neighbor] && adjacencyMatrix[currentVertex][neighbor] &&
+                distance[currentVertex] != INT_MAX &&
+                distance[currentVertex] + adjacencyMatrix[currentVertex][neighbor] < distance[neighbor]) {
+                distance[neighbor] = distance[currentVertex] + adjacencyMatrix[currentVertex][neighbor];
+            }
+        }
+    }
+
+    displayShortestPaths(distance, sourceVertex);
+}
+
+int main() {
+    int adjacencyMatrix[NUM_VERTICES][NUM_VERTICES] = {
+        {0, 7, 4, 0, 0},
+        {7, 0, 0, 6, 0},
+        {4, 0, 0, 5, 0},
+        {0, 6, 5, 0, 2},
+        {0, 0, 0, 2, 0}
+    };
+
+    int sourceVertex = 0;
+    dijkstraAlgorithm(adjacencyMatrix, sourceVertex);
+
+    return 0;
+}
