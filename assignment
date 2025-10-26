@@ -1,6 +1,6 @@
 // Dijkstra's Single Source Shortest Path Algorithm in C
-// Name: R. Pooja Reddy
-// Roll No: 2503B05130
+// Name: G Anjali Kiran
+// Roll No: 2503B05102
 
 #include <stdio.h>
 #include <limits.h>
